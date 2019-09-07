@@ -27,31 +27,26 @@ var server = app.listen(4000, function() {
     });
 
 
-    // multichain.getInfo((err, info) => {
-    //     if(err){
-    //         throw err;
-    //     }
-    //     console.log(info);
-    // })
-    // app.get('/getListStreamKeyItems', function(req, res){
-    //     var kisaanStreamKey = req.query.keyID;
-    //         multichain.listStreamKeyItems({
-    //             stream: "bane",
-    //             key: kisaanStreamKey,
-    //             verbose: true
+   
+    app.get('/getListStreamKeyItems', function(req, res){
+        var kisaanStreamKey = req.query.keyID;
+            multichain.listStreamKeyItems({
+                stream: "bane",
+                key: "key1",
+                verbose: true
                 
-    //         }, (err, results) => {
-    //             if(err){
-    //                 res.send(JSON.stringify(err));
-    //                 return res.end();
-    //             } 
-    //             let dataString = Buffer.from(results[results.length - 1].data, 'hex').toString();
-    //             results[results.length - 1].data = JSON.parse(dataString);
-    //             res.send(JSON.stringify(results[results.length - 1]));
-    //             return res.end();
+            }, (err, results) => {
+                if(err){
+                    res.send(JSON.stringify(err));
+                    return res.end();
+                } 
+                let dataString = Buffer.from(results[results.length - 1].data, 'hex').toString();
+                results[results.length - 1].data = JSON.parse(dataString);
+                res.send(JSON.stringify(results[results.length - 1]));
+                return res.end();
                 
-    //         }) 
-    //     });
+            }) 
+        });
 
         app.get('/getListStreamItems', function(req, res){
                 multichain.listStreamItems({
@@ -64,6 +59,18 @@ var server = app.listen(4000, function() {
                         return res.end();
                     }  
             });
+    
+        });
+
+  app.get('/getInfo', function(req, res){
+      multichain.getInfo((err, info) => {
+        if(err){
+            throw err;
+        }
+        console.log(info);
+	      res.send(JSON.stringify(info));
+                        return res.end();
+    })
     
         });
 
