@@ -13,21 +13,21 @@ app.all('*', function(req, res, next) {
 });
 
 //DIGI
-const connection = {
-    port: 4254,
-    host: '127.0.0.1',
-    user: "multichainrpc",
-    pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
-}
+// const connection = {
+//     port: 4254,
+//     host: '127.0.0.1',
+//     user: "multichainrpc",
+//     pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
+// }
 
 
 //LOCAL
-// const connection = {
-//     port: 7198,
-//     host: '127.0.0.1',
-//     user: "multichainrpc",
-//     pass: "GXFyoMgyRNmi4WgLiJsZQnhokUGMdFUSfQwY9LGxZ2Ft"
-// }
+const connection = {
+    port: 7198,
+    host: '127.0.0.1',
+    user: "multichainrpc",
+    pass: "GXFyoMgyRNmi4WgLiJsZQnhokUGMdFUSfQwY9LGxZ2Ft"
+}
 
 const multichain = require("../index.js")(connection);
 
@@ -67,18 +67,45 @@ var server = app.listen(4000, function() {
                 ]
         };
     
-        let dataHex = Buffer.from(JSON.stringify(DeviceData), 'utf8').toString('hex');
-            multichain.publish({stream:"bane",key: Key , data: dataHex }, (err, results) => {
-               // console.log(res)
-                if(err){
-                    res.send(JSON.stringify(err));
-                    return res.end();
-                }else{
-                    res.send(results);
-                    return res.end();
-                }
-            }) 
-            });
+        multichain.listStreamKeyItems({
+            stream: "bane",
+            key: Key,
+            verbose: true
+        }, (err, results) => {
+            if(err){
+                res.send(JSON.stringify(err));
+                return res.end();
+            }
+            if(results.length === 0) {
+                let dataHex = Buffer.from(JSON.stringify(DeviceData), 'utf8').toString('hex');
+                multichain.publish({stream:"bane",key: Key , data: dataHex }, (err, results) => {
+                   // console.log(res)
+                    if(err){
+                        res.send(JSON.stringify(err));
+                        return res.end();
+                    }else{
+                        res.send(results);
+                        return res.end();
+                    }
+                })
+        }else{
+
+            var response ={
+                "message":"Device Already Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
+        }
+        }) 
+
+
+
+            
+
+
+
+
+     });
 
     app.get('/postSMDDataToBC', function(req, res){
         var Key = req.query.DeviceID+"_"+req.query.ID;
@@ -120,11 +147,117 @@ var server = app.listen(4000, function() {
                     return res.end();
                 }
             }) 
+        }else{
+
+            var response ={
+                "message":"Device Not Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
         }
         }) 
     });
 
-    app.get('/getSMDDataFromBC', function(req, res){
+    app.get('/postGasDataToBC', function(req, res){
+        var Key = req.query.DeviceID+"_"+req.query.ID;
+        multichain.listStreamKeyItems({
+            stream: "bane",
+            key: Key,
+            verbose: true
+        }, (err, results) => {
+            if(err){
+                res.send(JSON.stringify(err));
+                return res.end();
+            }
+            if(results.length !== 0) {
+            let dataString = Buffer.from(results[results.length - 1].data, 'hex').toString();
+            results[results.length - 1].data = JSON.parse(dataString);
+           var oDeviceInfo = results[results.length - 1].data.DeviceInfo[0];
+        //    const uniqidNew = uniqid.time();
+        //    uniqueIDLekhPal=oKisaanInfo.kisaan_id+"L_"+uniqidNew;
+           var oSensorData ={};
+           oSensorData.ID = req.query.ID;
+           oSensorData.TEMPERATURE = req.query.TEMPERATURE;
+           oSensorData.PRESSURE = req.query.PRESSURE;
+           oSensorData.HUMIDITY = req.query.HUMIDITY;
+           oSensorData.IAQ = req.query.IAQ;
+           oSensorData.DeviceID = req.query.DeviceID;
+
+            results[results.length - 1].data.SensorData.push(oSensorData);
+
+            let dataHex = Buffer.from(JSON.stringify(results[results.length - 1].data), 'utf8').toString('hex');
+            multichain.publish({stream:"bane",key: req.query.DeviceID+"_"+req.query.ID, data: dataHex }, (err, results) => {                       
+                if(err){
+                    res.send(JSON.stringify(err));
+                    return res.end();
+                }else{
+                    var obj ={};
+                    obj.txid = results;
+                    res.send(JSON.stringify(obj));
+                    return res.end();
+                }
+            }) 
+        }else{
+
+            var response ={
+                "message":"Device Not Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
+        }
+        }) 
+    });
+
+    app.get('/postWaterProbeDataToBC', function(req, res){
+        var Key = req.query.DeviceID+"_"+req.query.ID;
+        multichain.listStreamKeyItems({
+            stream: "bane",
+            key: Key,
+            verbose: true
+        }, (err, results) => {
+            if(err){
+                res.send(JSON.stringify(err));
+                return res.end();
+            }
+            if(results.length !== 0) {
+            let dataString = Buffer.from(results[results.length - 1].data, 'hex').toString();
+            results[results.length - 1].data = JSON.parse(dataString);
+           var oDeviceInfo = results[results.length - 1].data.DeviceInfo[0];
+        //    const uniqidNew = uniqid.time();
+        //    uniqueIDLekhPal=oKisaanInfo.kisaan_id+"L_"+uniqidNew;
+           var oSensorData ={};
+           oSensorData.ID = req.query.ID;
+           oSensorData.TEMPERATURE = req.query.TEMPERATURE;
+           oSensorData.PH = req.query.PH;
+           oSensorData.CONDUCTIVITY = req.query.CONDUCTIVITY;
+           oSensorData.DeviceID = req.query.DeviceID;
+
+            results[results.length - 1].data.SensorData.push(oSensorData);
+
+            let dataHex = Buffer.from(JSON.stringify(results[results.length - 1].data), 'utf8').toString('hex');
+            multichain.publish({stream:"bane",key: req.query.DeviceID+"_"+req.query.ID, data: dataHex }, (err, results) => {                       
+                if(err){
+                    res.send(JSON.stringify(err));
+                    return res.end();
+                }else{
+                    var obj ={};
+                    obj.txid = results;
+                    res.send(JSON.stringify(obj));
+                    return res.end();
+                }
+            }) 
+        }else{
+
+            var response ={
+                "message":"Device Not Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
+        }
+        }) 
+    });
+
+    app.get('/getDeviceDataFromBC', function(req, res){
         var Key = req.query.DeviceID+"_"+req.query.ID;
         multichain.listStreamKeyItems({
             stream: "bane",
@@ -141,11 +274,18 @@ var server = app.listen(4000, function() {
            var oDeviceInfo = results[results.length - 1].data.SensorData[results[results.length - 1].data.SensorData.length - 1];
            res.send(JSON.stringify(oDeviceInfo));
         return res.end();
+        }else{
+
+            var response ={
+                "message":"Device Not Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
         }
         }) 
     });
 
-    app.get('/getSMDDataTrackingHistory', function(req, res){
+    app.get('/getDeviceDataTrackingHistory', function(req, res){
         var Key = req.query.DeviceID+"_"+req.query.ID;
         multichain.listStreamKeyItems({
             stream: "bane",
@@ -162,6 +302,18 @@ var server = app.listen(4000, function() {
            var oDeviceInfo = results[results.length - 1].data;
            res.send(JSON.stringify(oDeviceInfo));
         return res.end();
+        }else{
+
+            var response ={
+                "message":"Device Not Registered in Blockchain Network"
+            };
+            res.send(JSON.stringify(response));
+            return res.end();
         }
         }) 
     });
+
+    
+
+
+
