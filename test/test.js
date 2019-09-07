@@ -13,21 +13,21 @@ app.all('*', function(req, res, next) {
 });
 
 //DIGI
-// const connection = {
-//     port: 4254,
-//     host: '127.0.0.1',
-//     user: "multichainrpc",
-//     pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
-// }
+const connection = {
+    port: 4254,
+    host: '127.0.0.1',
+    user: "multichainrpc",
+    pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
+}
 
 
 //LOCAL
-const connection = {
-    port: 7198,
-    host: '127.0.0.1',
-    user: "multichainrpc",
-    pass: "GXFyoMgyRNmi4WgLiJsZQnhokUGMdFUSfQwY9LGxZ2Ft"
-}
+// const connection = {
+//     port: 7198,
+//     host: '127.0.0.1',
+//     user: "multichainrpc",
+//     pass: "GXFyoMgyRNmi4WgLiJsZQnhokUGMdFUSfQwY9LGxZ2Ft"
+// }
 
 const multichain = require("../index.js")(connection);
 
