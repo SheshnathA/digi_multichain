@@ -1,7 +1,20 @@
 "use strict";
 
 const assert = require('assert');
+var express = require('express')
+	util = require('util'),
+	url = require('url'),
+        http = require('http'),
+        uniqid = require('uniqid'),
+        app = express();
+        
 
+app.all('*', function(req, res, next) {
+	res.header("Content-Type", "text/plain");
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "xtoken");
+	next();
+});
 const connection = {
     port: 4254,
     host: '127.0.0.1',
