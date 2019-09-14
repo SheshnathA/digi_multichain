@@ -142,6 +142,7 @@ var server = app.listen(4000, function() {
                     return res.end();
                 }else{
                     var obj ={};
+                    obj.statusCode = 200;
                     obj.txid = results;
                     obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
@@ -193,6 +194,7 @@ var server = app.listen(4000, function() {
                     return res.end();
                 }else{
                     var obj ={};
+                    obj.statusCode = 200;
                     obj.txid = results;
                     obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
@@ -243,6 +245,7 @@ var server = app.listen(4000, function() {
                     return res.end();
                 }else{
                     var obj ={};
+                    obj.statusCode = 200;
                     obj.txid = results;
                     obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
