@@ -105,8 +105,8 @@ var server = app.listen(4000, function() {
 
 
 
-     });
-
+    });
+    
     app.get('/postSMDDataToBC', function(req, res){
         var Key = req.query.DeviceID+"_"+req.query.ID;
         multichain.listStreamKeyItems({
@@ -143,6 +143,7 @@ var server = app.listen(4000, function() {
                 }else{
                     var obj ={};
                     obj.txid = results;
+                    obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
                     return res.end();
                 }
@@ -193,6 +194,7 @@ var server = app.listen(4000, function() {
                 }else{
                     var obj ={};
                     obj.txid = results;
+                    obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
                     return res.end();
                 }
@@ -242,6 +244,7 @@ var server = app.listen(4000, function() {
                 }else{
                     var obj ={};
                     obj.txid = results;
+                    obj.deviceInfo = oDeviceInfo;
                     res.send(JSON.stringify(obj));
                     return res.end();
                 }
@@ -271,8 +274,14 @@ var server = app.listen(4000, function() {
             if(results.length !== 0) {
             let dataString = Buffer.from(results[results.length - 1].data, 'hex').toString();
             results[results.length - 1].data = JSON.parse(dataString);
-           var oDeviceInfo = results[results.length - 1].data.SensorData[results[results.length - 1].data.SensorData.length - 1];
-           res.send(JSON.stringify(oDeviceInfo));
+           var oSensorData = results[results.length - 1].data.SensorData[results[results.length - 1].data.SensorData.length - 1];
+           var oDeviceInfo = results[results.length - 1].data.DeviceInfo[0];
+
+           var finalobj = {
+               "deviceInfo":oDeviceInfo,
+               "sensorData":oSensorData
+           };
+           res.send(JSON.stringify(finalobj));
         return res.end();
         }else{
 
@@ -314,6 +323,5 @@ var server = app.listen(4000, function() {
     });
 
     
-
 
 
