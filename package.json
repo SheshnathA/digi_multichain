@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scoin/multichain-node.git"
+    "url": "git+https://github.com/scoin/shesh-chatbot.git"
   },
   "keywords": [
     "blockchain",
@@ -19,9 +19,9 @@
   "author": "Greg Piccolo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/scoin/multichain-node/issues"
+    "url": "https://github.com/scoin/shesh-chatbot/issues"
   },
-  "homepage": "https://github.com/scoin/multichain-node#readme",
+  "homepage": "https://github.com/scoin/shesh-chatbot#readme",
   "dependencies": {
     "express": "^4.17.1"
   },
