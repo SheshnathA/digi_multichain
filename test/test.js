@@ -84,7 +84,10 @@ var server = app.listen(4000, function() {
                         res.send(JSON.stringify(err));
                         return res.end();
                     }else{
-                        res.send(results);
+                       var obj ={};
+                        obj.statusCode = 200;
+                        obj.txid = results;
+                        res.send(JSON.stringify(obj));
                         return res.end();
                     }
                 })
