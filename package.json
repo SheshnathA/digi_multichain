@@ -22,6 +22,8 @@
     "url": "https://github.com/scoin/multichain-node/issues"
   },
   "homepage": "https://github.com/scoin/multichain-node#readme",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  },
   "devDependencies": {}
 }
