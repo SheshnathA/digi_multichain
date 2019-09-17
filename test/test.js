@@ -12,13 +12,13 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-//DIGI
-// const connection = {
-//     port: 4254,
-//     host: '127.0.0.1',
-//     user: "multichainrpc",
-//     pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
-// }
+DIGI
+const connection = {
+    port: 4254,
+    host: '127.0.0.1',
+    user: "multichainrpc",
+    pass: "gCvF1UgDnTLKWjM4GatTBGJGrZVLNbi4zqnerjLK7h5"
+}
 
 
 //LOCAL
