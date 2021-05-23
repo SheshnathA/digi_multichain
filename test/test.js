@@ -23,10 +23,10 @@ app.all('*', function(req, res, next) {
 
 //LOCAL
 const connection = {
-    port: 8004,
-    host: '10.0.0.4',
+    port: 8002,
+    host: 'localhost',
     user: "multichainrpc",
-    pass: "9r3PcEgM2FVY6Qhs9M3s5qauszpAcxdM5WGaMQFoG5sa"
+    pass: "79fiBbXJJdNWtMDREwYfdMsmjzzDdPk4oh2uerBA3Jja"
 }
 
 const multichain = require("../index.js")(connection);
@@ -58,6 +58,7 @@ var server = app.listen(8000, function() {
                 
             }, (err, results) => {
                 if(err){
+
                     res.send(JSON.stringify(err));
                     return res.end();
                 } 

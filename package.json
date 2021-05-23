@@ -25,12 +25,9 @@
   "dependencies": {
     "express": "^4.17.1"
   },
-<<<<<<< HEAD
   "homepage": "https://github.com/scoin/multichain-node#readme",
   "dependencies": {
     "express": "^4.17.1"
   },
-=======
->>>>>>> 9103c95496c1581b0437bc373cf6cfb8c9bb5b7d
   "devDependencies": {}
 }
